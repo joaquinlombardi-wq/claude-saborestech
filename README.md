@@ -12,14 +12,22 @@ python3 -m http.server 8000   # o: npx serve .
 
 Abrí http://localhost:8000.
 
-## Publicarlo
+## Publicarlo en Render
 
-Subí la carpeta tal cual a Netlify (arrastrar y soltar), Vercel, Cloudflare Pages o GitHub Pages. El único recurso externo es React 18.3.1 desde cdnjs; las tipografías y las imágenes van incluidas.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/joaquinlombardi-wq/claude-saborestech/tree/claude/sleepy-clarke-e0wgul)
+
+El botón lee `render.yaml` y crea un *Static Site* llamado `la-mesa-deenex`; Render le da una URL del tipo `https://la-mesa-deenex.onrender.com`. El build (`render-build.sh`) publica solo el sitio, no `fuentes/`, y usa esa URL para la imagen al compartir. Cada push a la rama vuelve a desplegar.
+
+A mano: en Render, **New → Static Site**, elegí este repo y la rama `claude/sleepy-clarke-e0wgul`, poné `bash render-build.sh` como *Build Command* y `dist` como *Publish Directory*.
+
+## Publicarlo en otro lado
+
+También se puede subir la carpeta tal cual a Netlify (arrastrar y soltar), Vercel, Cloudflare Pages o GitHub Pages. El único recurso externo es React 18.3.1 desde cdnjs; las tipografías y las imágenes van incluidas.
 
 Antes de hacerlo público:
 
 - **Indexación.** El `index.html` lleva `<meta name="robots" content="noindex, nofollow">` porque el contenido es un documento interno de trabajo (marcas candidatas, partners a definir). Sacalo de `index.html` y de `fuentes/index.template.html` cuando quieras que aparezca en buscadores.
-- **Imagen para compartir.** `og:image` apunta a `assets/img/og-la-mesa.jpg` con ruta relativa. Cambiala por la URL absoluta del dominio final para que se vea al compartir el link.
+- **Imagen para compartir.** En Render se completa sola. En otro hosting, cambiá la ruta relativa de `og:image` (`assets/img/og-la-mesa.jpg`) por la URL absoluta del dominio final para que se vea al compartir el link.
 - **Fotografía.** Las imágenes son renders de referencia, no fotos de la noche: las firmas de la servilleta y los platos de la pantalla son ficticios. Cuando haya fotografía real, reemplazá los archivos de `assets/img/fotos/` con los mismos nombres.
 
 ## Qué hay en cada lugar
@@ -27,6 +35,8 @@ Antes de hacerlo público:
 ```
 index.html                 la página, con el contenido pre-renderizado (se lee sin JavaScript)
 favicon.svg
+render.yaml                configuración del Static Site en Render
+render-build.sh            build de Render: copia el sitio a dist/
 assets/css/tokens.css      colores, tipografía, espacios (generado desde fuentes/tokens.json)
 assets/css/la-mesa.css     estilos de los componentes
 assets/css/sitio.css       ajustes propios de la página
